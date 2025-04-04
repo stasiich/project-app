@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to SkillShare{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>Unlock Your Potential</h1>
+        <p>Join thousands of learners and share your skills with the world.</p>
+        <button onclick="location.href='/courses'">Explore Courses</button>
+    </div>
+</section>
+
+<section class="features">
+    <h2>Why SkillShare?</h2>
+    <div class="course-grid">
+        <div class="course-card">
+            <h3>Expert Mentors</h3>
+            <p>Learn directly from industry leaders with years of experience.</p>
+        </div>
+        <div class="course-card">
+            <h3>Flexible Learning</h3>
+            <p>Study at your own pace, anytime, anywhere in the world.</p>
+        </div>
+        <div class="course-card">
+            <h3>Community Support</h3>
+            <p>Join a vibrant community of learners, mentors, and collaborators.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

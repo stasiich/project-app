@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}{{ course.title }}{% endblock %}
+
+{% block content %}
+<section class="course-detail">
+    <h2>{{ course.title }}</h2>
+    <p>{{ course.description }}</p>
+    <div class="rating">
+    {% if course.average_rating() == 0 %}
+        ⭐ No ratings yet
+    {% else %}
+        {% for _ in range(course.average_rating()|round(0, 'floor')|int) %}
+            ⭐
+        {% endfor %}
+        ({{ course.average_rating() }})
+    {% endif %}
+</div>
+
+
+
+{% if user_email != course.creator_email %}
+    <h3>Leave a Review</h3>
+    <form method="POST">
+        <label for="rating">Rating (1–5):</label>
+        <input type="number" name="rating" min="1" max="5" required />
+        <textarea name="comment" placeholder="Write your comment..." required></textarea>
+        <button type="submit">Submit Review</button>
+    </form>
+
+    <h3>Hire Skill</h3>
+    <form method="POST">
+        <textarea name="hire_message" placeholder="What do you need help with?" required></textarea>
+        <button type="submit">Send Request</button>
+    </form>
+{% else %}
+    <p><em>You created this course. Reviews and hire requests from you aren't allowed.</em></p>
+{% endif %}
+
+
+
+
+    <h3>User Reviews</h3>
+    {% if course.comments %}
+        <ul>
+            {% for rating, comment in course.comments %}
+                <li>⭐ {{ rating }} – {{ comment }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No reviews yet. Be the first!</p>
+    {% endif %}
+
+    <a href="{{ url_for('courses') }}" class="create-btn">← Back to Courses</a>
+</section>
+{% endblock %}
