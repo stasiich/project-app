@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Your Profile{% endblock %}
+
+{% block content %}
+<section class="profile">
+    <h2>Hello, {{ user.name }}</h2>
+    <p>Email: {{ user.email }}</p>
+
+    <h3>Your Listed Skills</h3>
+    {% if user_courses %}
+        <div class="course-grid">
+            {% for course in user_courses %}
+            <a href="{{ url_for('course_detail', course_id=course.id) }}" class="course-link">
+                <div class="course-card">
+                    <h3>{{ course.title }}</h3>
+                    <p>{{ course.description[:100] }}...</p>
+                    <div class="rating">
+                        {% set stars = course.average_rating() %}
+                        {% if stars == 0 %}
+                            ⭐ No ratings yet
+                        {% else %}
+                            {% for _ in range(stars|int) %}
+                                ⭐
+                            {% endfor %}
+                            ({{ stars }})
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You haven’t posted any skills yet.</p>
+    {% endif %}
+<h3>Your Inbox</h3>
+{% if user_requests %}
+    <ul class="inbox">
+        {% for req in user_requests %}
+            <li>
+                <strong>{{ req.from_email }}</strong> wants to hire your skill from
+                <em>{{ req.course_title }}</em>:<br/>
+                "{{ req.message }}"
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No hire requests yet.</p>
+{% endif %}
+
+</section>
+{% endblock %}
