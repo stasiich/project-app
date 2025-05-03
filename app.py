@@ -87,7 +87,6 @@ def course_detail(course_id):
 
     user_email = session.get('user', {}).get('email')
 
-    # Handle review form submission
     if request.method == 'POST' and 'rating' in request.form and user_email and user_email != course.creator_email:
         try:
             rating = int(request.form['rating'])
@@ -98,7 +97,6 @@ def course_detail(course_id):
         except (ValueError, KeyError):
             flash('Invalid form submission.', 'danger')
 
-    # Handle hire skill request form submission
     if request.method == 'POST' and 'hire_message' in request.form and user_email and user_email != course.creator_email:
         hire_message = request.form['hire_message']
         new_request = SkillRequest(
@@ -123,10 +121,8 @@ def profile():
         flash('Please log in to view your profile.', 'warning')
         return redirect(url_for('login'))
 
-    # Get courses created by this user
     user_courses = [c for c in courses_list if c.creator_email == user['email']]
 
-    # Get skill hire requests sent to this user
     user_requests = [r for r in skill_requests if r.to_email == user['email']]
 
     return render_template('profile.html', user=user, user_courses=user_courses, user_requests=user_requests)
